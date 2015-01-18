@@ -31,7 +31,7 @@
 			loginForm.setAttribute('class','student-auto-form form-horizontal well');
 			loginForm.setAttribute('action','#');
 			//дальше мне лень это все прописывать руками
-			loginForm.innerHTML = '<div class="form-group">					<label for="player-name" class="col-sm-2 control-label">Name</label>						<div class="col-sm-10">							<input type="text" name="player-name" id="player-name" class="form-control">						</div>					</div>					<div class="form-group">						<label for="player-number" class="col-sm-2 control-label">Password</label>						<div class="col-sm-10">							<input type="password" name="player-number" id="player-number" class="form-control">						</div>					</div>					<div class="form-group">						<div class="col-sm-offset-2 col-sm-10">							<input type="submit" value="Залогиниться" class="btn btn-primary">						</div>					</div>';
+			loginForm.innerHTML = '<div class="form-group">					<label for="student-name" class="col-sm-2 control-label">Name</label>						<div class="col-sm-10">							<input type="text" name="student-name" id="student-name" class="form-control">						</div>					</div>					<div class="form-group">						<label for="student-pass" class="col-sm-2 control-label">Password</label>						<div class="col-sm-10">							<input type="password" name="student-pass" id="student-pass" class="form-control">						</div>					</div>					<div class="form-group">						<div class="col-sm-offset-2 col-sm-10">							<input type="submit" value="Залогиниться" class="btn btn-primary">						</div>					</div>';
 			col.appendChild(loginForm);
 			document.body.appendChild(container);
 		},
@@ -43,6 +43,12 @@
 
 		createTest: function(event){
 			event.preventDefault();
+			var studentName = document.getElementById('student-name').value;
+			var studentPass = document.getElementById('student-pass').value;
+			if(studentName == '' || studentPass == ''){ 
+				alert('Enter you name and password');
+				return;
+			};
 			testApp.destroyLoginForm(testApp.form);
 			testApp.createTestForm();
 			var ul = document.createElement('ul');
@@ -51,7 +57,7 @@
 			testForm.appendChild(ul);
 
 			var tests = [];
-			tests[0] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[0] = new testApp.test("How are you?", ['good','fine','excellent'], [0,1,0]);
 			// tests[1] = new testApp.test("How are you?", ['good','fine'], [0,1]);
 			// tests[2] = new testApp.test("How are you?", ['good','fine'], [0,1]);
 			// tests[3] = new testApp.test("How are you?", ['good','fine'], [0,1]);
@@ -87,7 +93,7 @@
 
 		destroyLoginForm: function(form){
 			var form = document.querySelector('.student-auto-form');
-			form.parentNode.parentNode.removeChild(form.parentNode);//destrouing form			
+			form.parentNode.parentNode.removeChild(form.parentNode);//destroing form			
 		},
 
 		createTestForm: function(){
@@ -111,23 +117,23 @@
 		checkingResults : function(event){
 			var result=0;
 			event.preventDefault();
-			var ul = document.querySelector('.question-list');			
-			for (var i = 0; i <= ul.childNodes.length - 1; i++) {
+			var questionList = document.querySelector('.question-list');			
+			for (var i = 0; i <= questionList.childNodes.length - 1; i++) {
 				var res = 0;
-				for (var j = 0; j <= testApp.tests[i].rightAnswers.length - 1; j++){
-					console.log(i);
-					console.log(j);
-					console.log(testApp.tests[i].rightAnswers.length);
-					console.log(ul.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1]);
-					console.log(ul.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1].attributes[0].ownerElement.checked);
-					console.log(testApp.tests[i].rightAnswers[j]);
-					if (ul.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1].attributes[0].ownerElement.checked > testApp.tests[i].rightAnswers[j])
-						{ul.childNodes[i].childNodes[1].childNodes[j+1].setAttribute('style','background:red'); res++; }
-			   else if (ul.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1].attributes[0].ownerElement.checked < testApp.tests[i].rightAnswers[j])
-			   			{ul.childNodes[i].childNodes[1].childNodes[j+1].setAttribute('style','background:green');res++;}			 
+				for (var j = 0; j <= testApp.tests[i].answers.length - 1; j++){
+
+					var currentCheckbox = questionList.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1];
+					var currentCheckboxParent = currentCheckbox.parentNode;
+
+					if (currentCheckbox.checked > testApp.tests[i].rightAnswers[j])
+						{currentCheckboxParent.setAttribute('style','color:red'); res++; }
+
+			   else if (currentCheckbox.checked < testApp.tests[i].rightAnswers[j])
+			   			{currentCheckboxParent.setAttribute('style','color:green');res++;}			 
 				};
 
 			if (res>0) {result++};	
+
 			};
 
 			alert('You have '+result+' worng answers');
@@ -135,13 +141,14 @@
 		},
 		cleanAnswers : function(event){
 			event.preventDefault();
-			var ul = document.querySelector('.question-list');			
-			for (var i = 0; i <= ul.childNodes.length - 1; i++) {
-				for (var j = 0; j <= testApp.tests[i].rightAnswers.length - 1; j++){
-					ul.childNodes[i].childNodes[1].childNodes[j+1].setAttribute('style','background:transparrent');
-					ul.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1].attributes[0].ownerElement.checked = 0;
-					console.log(ul.childNodes[i].childNodes[1].childNodes[j+1]);
-					console.log(ul.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1].attributes[0].ownerElement.checked);
+			var questionList = document.querySelector('.question-list');			
+			for (var i = 0; i <= questionList.childNodes.length - 1; i++) {
+				for (var j = 0; j <= testApp.tests[i].answers.length - 1; j++){
+					var currentCheckbox = questionList.childNodes[i].childNodes[1].childNodes[j+1].childNodes[1];
+					var currentCheckboxParent = currentCheckbox.parentNode;
+
+					currentCheckbox.checked = false;
+					currentCheckboxParent.setAttribute('style','color:black');
 				}			 
 			};
 			
