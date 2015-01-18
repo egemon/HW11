@@ -57,23 +57,29 @@
 			testForm.appendChild(ul);
 
 			var tests = [];
-			tests[0] = new testApp.test("How are you?", ['good','fine','excellent'], [0,1,0]);
-			// tests[1] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[2] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[3] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[4] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[5] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[6] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[7] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[8] = new testApp.test("How are you?", ['good','fine'], [0,1]);
-			// tests[9] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[0] = new testApp.test("Укажите имя функции округления вверх?", ['Ceil','math.ceil','Math.ceil'], [0,0,1]);
+			tests[1] = new testApp.test(" Выберите синтаксически правильные варианты создания массива.", ['var a = new [1,2,3];',
+				'var a = new Array();',
+				'var a = [1,2,3];',
+				'var a = new Array(1,2,3);',
+				'var a = new Array[1,2,3];'], [0,1,1,1,0]);
+			tests[2] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[3] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[4] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[5] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[6] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[7] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[8] = new testApp.test("How are you?", ['good','fine'], [0,1]);
+			tests[9] = new testApp.test("How are you?", ['good','fine'], [0,1]);
 				
 			for (var i = 0; i < tests.length; i++) {
 				var li = document.createElement('li');
 				li.setAttribute('style','list-style:none');
 				i++;			
-				li.innerHTML += 'вопрос №'+i;
+				li.innerHTML += 'Вопрос №'+i;
 				i--;
+				li.style.paddingBottom = '15px';
+				li.style.borderBottom = '1px solid black'
 				ul.appendChild(li);
 				testApp.createQusetion(tests[i],i);
 			};
@@ -99,7 +105,7 @@
 		createTestForm: function(){
 			var TestForm = document.createElement('form');
 			TestForm.setAttribute('class','testForm form-horizontal well');
-			TestForm.innerHTML = '<legend>Test of programming</legend>';
+			TestForm.innerHTML = '<legend>JavaScript Test</legend>';
 			var row = document.querySelector('.row');
 			row.appendChild(TestForm);
 		},
